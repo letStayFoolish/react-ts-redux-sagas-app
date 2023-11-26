@@ -1,7 +1,7 @@
 import { type PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { initialState } from "./constants";
 import { type UsersState } from "./types";
-import { UserState } from "../../../types";
+import { type UserState } from "../../../types";
 
 const UsersSlice = createSlice({
   name: "users",
@@ -24,10 +24,7 @@ const UsersSlice = createSlice({
       return state;
     },
 
-    edithUserSlice: (
-      state: UsersState,
-      action: PayloadAction<UserState>
-    ): UsersState => {
+    edithUserSlice: (state, action: PayloadAction<UserState>): UsersState => {
       state = state.map((user) =>
         user.id === action.payload.id ? action.payload : user
       );

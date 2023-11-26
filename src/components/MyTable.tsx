@@ -9,9 +9,13 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import { type RootState } from "../store";
-import { deleteUserSlice, getUsersSlice } from "../redux/slice/UsersSlice";
+import {
+  DELETE_USER_BY_ID,
+  GET_USERS,
+  GET_USER_BY_ID,
+  UPDATE_USER_BY_ID,
+} from "../redux/types";
 import { setUserSlice } from "../redux/slice/UserSlice";
-import { GET_USERS } from "../redux/types";
 
 export default function MyTable() {
   const dispatch = useDispatch();
@@ -31,7 +35,6 @@ export default function MyTable() {
             <TableCell align="right">Password</TableCell>
             <TableCell align="right">Edit</TableCell>
             <TableCell align="right">Delete</TableCell>
-            <TableCell align="right">ID</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -48,6 +51,7 @@ export default function MyTable() {
               <TableCell align="right">
                 <Button
                   onClick={() => dispatch(setUserSlice(row))}
+                  // onClick={() => dispatch({ type: GET_USER_BY_ID, row })}
                   fullWidth
                   variant="contained"
                 >
@@ -56,14 +60,15 @@ export default function MyTable() {
               </TableCell>
               <TableCell align="right">
                 <Button
-                  onClick={() => dispatch(deleteUserSlice(row))}
+                  onClick={() =>
+                    dispatch({ type: DELETE_USER_BY_ID, id: row.id })
+                  }
                   fullWidth
                   variant="contained"
                 >
                   Delete
                 </Button>
               </TableCell>
-              <TableCell align="right">{row.id}</TableCell>
             </TableRow>
           ))}
         </TableBody>

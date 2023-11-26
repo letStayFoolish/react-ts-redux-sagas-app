@@ -5,9 +5,8 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Input from "@mui/material/Input";
 import { RootState } from "../store";
-import { addUserSlice, edithUserSlice } from "../redux/slice/UsersSlice";
 import { setUserSlice } from "../redux/slice/UserSlice";
-import { type UserState } from "../types";
+import { CREATE_USER, UPDATE_USER_BY_ID } from "../redux/types";
 
 const MyForm = () => {
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -25,21 +24,19 @@ const MyForm = () => {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    user.id === "0"
-      ? dispatch(addUserSlice({ ...user, id: nanoid(8) }))
-      : dispatch(edithUserSlice(user));
+    user.id === ""
+      ? dispatch({ type: CREATE_USER, user: { ...user, id: nanoid(8) } })
+      : dispatch({ type: UPDATE_USER_BY_ID, user });
 
     // Reset form fields:
     dispatch(
       setUserSlice({
-        id: "0",
+        id: "",
         name: "",
         emil: "",
         password: "",
       })
     );
-
-    console.log("user:  submitting", user);
   };
 
   useEffect(() => {

@@ -1,17 +1,74 @@
-import { put, takeLatest } from "redux-saga/effects";
-import { getUsersSlice } from "../slice/UsersSlice";
-import { getUsersAPI } from "../../api";
-import { GET_USERS } from "../types";
+import { put, takeEvery } from "redux-saga/effects";
+import {
+  addUserSlice,
+  deleteUserSlice,
+  edithUserSlice,
+  getUsersSlice,
+} from "../slice/UsersSlice";
+import {
+  createUserAPI,
+  deleteUserByIdAPI,
+  getUserByIdAPI,
+  getUsersAPI,
+  updateUserAPI,
+} from "../../api";
+import {
+  CREATE_USER,
+  GET_USERS,
+  DELETE_USER_BY_ID,
+  GET_USER_BY_ID,
+  UPDATE_USER_BY_ID,
+} from "../types";
+import { type UserState } from "../../types";
+import { setUserSlice } from "../slice/UserSlice";
 
-export function* workGetUsers(action: any): any {
-  console.log("before try inside workGetUsers");
+export function* workGetUsersSaga(): any {
   try {
-    console.log("begining of the try inside workGetUsers");
     const response = yield getUsersAPI();
 
     yield put(getUsersSlice(response.data));
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-    console.log("RESPONSE: ", response);
+export function* workGetUserById(action: any) {
+  try {
+    yield getUserByIdAPI(action.id);
+
+    yield put(setUserSlice(action.id));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export function* workCreateUser(action: { type: string; user: UserState }) {
+  try {
+    yield createUserAPI(action.user);
+
+    yield addUserSlice(action.user);
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export function* workUpdateUserById(action: { type: string; user: UserState }) {
+  const { user } = action;
+
+  try {
+    yield updateUserAPI(user);
+
+    yield put(edithUserSlice(user));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export function* workDeleteUserById(action: any) {
+  try {
+    yield deleteUserByIdAPI(action.id);
+
+    yield put(deleteUserSlice(action));
   } catch (error) {
     console.error(error);
   }
@@ -19,7 +76,11 @@ export function* workGetUsers(action: any): any {
 
 // watcher:
 function* watchGetUsers() {
-  yield takeLatest(GET_USERS, workGetUsers);
+  yield takeEvery(GET_USERS, workGetUsersSaga);
+  yield takeEvery(GET_USER_BY_ID, workGetUserById);
+  yield takeEvery(CREATE_USER, workCreateUser);
+  yield takeEvery(UPDATE_USER_BY_ID, workUpdateUserById);
+  yield takeEvery(DELETE_USER_BY_ID, workDeleteUserById);
 }
 
 export default watchGetUsers;
