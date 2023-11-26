@@ -11,14 +11,15 @@ import Button from "@mui/material/Button";
 import { type RootState } from "../store";
 import { deleteUserSlice, getUsersSlice } from "../redux/slice/UsersSlice";
 import { setUserSlice } from "../redux/slice/UserSlice";
+import { GET_USERS } from "../redux/types";
 
 export default function MyTable() {
   const dispatch = useDispatch();
   const rows = useSelector((state: RootState) => state.users);
 
-  // useEffect(() => {
-  //   dispatch(getUsersSlice);
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch({ type: GET_USERS });
+  }, [dispatch]);
 
   return (
     <TableContainer component={Paper}>

@@ -5,7 +5,6 @@ const userSlice = createSlice({
   name: "user",
   initialState: initialState,
   reducers: {
-    // trigger API:
     setUserSlice(state, action) {
       state = action.payload;
       return state;

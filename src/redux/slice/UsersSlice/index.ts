@@ -19,7 +19,6 @@ const UsersSlice = createSlice({
       state: UsersState,
       action: PayloadAction<UserState>
     ): UsersState => {
-      console.log(action.payload);
       state.push(action.payload);
 
       return state;
