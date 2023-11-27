@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import { type RootState } from "../store";
-import { DELETE_USER_BY_ID, GET_USERS } from "../redux/types";
+import { TypeActions } from "../redux/types";
 import { setUserSlice } from "../redux/slice/UserSlice";
 
 export default function MyTable() {
@@ -17,7 +17,7 @@ export default function MyTable() {
   const rows = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
-    dispatch({ type: GET_USERS });
+    dispatch({ type: TypeActions.GET_USERS });
   }, [dispatch]); // FIXME: update on every new user (rows??)
 
   return (
@@ -56,7 +56,10 @@ export default function MyTable() {
               <TableCell align="right">
                 <Button
                   onClick={() =>
-                    dispatch({ type: DELETE_USER_BY_ID, id: row.id })
+                    dispatch({
+                      type: TypeActions.DELETE_USER_BY_ID,
+                      id: row.id,
+                    })
                   }
                   fullWidth
                   variant="contained"

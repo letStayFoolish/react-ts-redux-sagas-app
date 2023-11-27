@@ -6,7 +6,7 @@ import Container from "@mui/material/Container";
 import Input from "@mui/material/Input";
 import { RootState } from "../store";
 import { setUserSlice } from "../redux/slice/UserSlice";
-import { CREATE_USER, UPDATE_USER_BY_ID } from "../redux/types";
+import { TypeActions } from "../redux/types";
 
 const MyForm = () => {
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -25,8 +25,11 @@ const MyForm = () => {
     e.preventDefault();
 
     user.id === ""
-      ? dispatch({ type: CREATE_USER, user: { ...user, id: nanoid(8) } })
-      : dispatch({ type: UPDATE_USER_BY_ID, user });
+      ? dispatch({
+          type: TypeActions.CREATE_USER,
+          user: { ...user, id: nanoid(8) },
+        })
+      : dispatch({ type: TypeActions.UPDATE_USER_BY_ID, user });
 
     // Reset form fields:
     dispatch(
