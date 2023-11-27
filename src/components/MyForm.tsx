@@ -54,6 +54,7 @@ const MyForm = () => {
       <Container>
         <Input value={user?.id} fullWidth disabled></Input>
         <Input
+          type="text"
           placeholder="EnterYour Name"
           name="name"
           value={user?.name || ""}
@@ -61,6 +62,7 @@ const MyForm = () => {
           onChange={(event) => handleChange(event)}
         ></Input>
         <Input
+          type="email"
           placeholder="Enter Your Email Address"
           name="email"
           value={user?.email || ""}
@@ -68,6 +70,7 @@ const MyForm = () => {
           onChange={(event) => handleChange(event)}
         ></Input>
         <Input
+          type="password"
           placeholder="Enter Your Password"
           name="password"
           value={user?.password || ""}

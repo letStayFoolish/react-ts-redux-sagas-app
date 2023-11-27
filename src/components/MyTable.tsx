@@ -9,12 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import { type RootState } from "../store";
-import {
-  DELETE_USER_BY_ID,
-  GET_USERS,
-  GET_USER_BY_ID,
-  UPDATE_USER_BY_ID,
-} from "../redux/types";
+import { DELETE_USER_BY_ID, GET_USERS } from "../redux/types";
 import { setUserSlice } from "../redux/slice/UserSlice";
 
 export default function MyTable() {
@@ -23,7 +18,7 @@ export default function MyTable() {
 
   useEffect(() => {
     dispatch({ type: GET_USERS });
-  }, [dispatch]);
+  }, [dispatch, rows]);
 
   return (
     <TableContainer component={Paper}>
