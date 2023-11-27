@@ -33,7 +33,7 @@ const MyForm = () => {
       setUserSlice({
         id: "",
         name: "",
-        emil: "",
+        email: "",
         password: "",
       })
     );

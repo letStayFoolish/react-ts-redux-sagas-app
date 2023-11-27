@@ -18,7 +18,7 @@ export default function MyTable() {
 
   useEffect(() => {
     dispatch({ type: GET_USERS });
-  }, [dispatch, rows]);
+  }, [dispatch]); // FIXME: update on every new user (rows??)
 
   return (
     <TableContainer component={Paper}>

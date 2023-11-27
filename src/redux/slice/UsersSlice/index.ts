@@ -24,7 +24,7 @@ const UsersSlice = createSlice({
       return state;
     },
 
-    edithUserSlice: (state, action: PayloadAction<UserState>): UsersState => {
+    editUserSlice: (state, action: PayloadAction<UserState>): UsersState => {
       state = state.map((user) =>
         user.id === action.payload.id ? action.payload : user
       );
@@ -42,7 +42,7 @@ const UsersSlice = createSlice({
   },
 });
 
-export const { getUsersSlice, addUserSlice, deleteUserSlice, edithUserSlice } =
+export const { getUsersSlice, addUserSlice, deleteUserSlice, editUserSlice } =
   UsersSlice.actions;
 
 export default UsersSlice.reducer;

@@ -2,7 +2,7 @@ import { put, takeEvery } from "redux-saga/effects";
 import {
   addUserSlice,
   deleteUserSlice,
-  edithUserSlice,
+  editUserSlice,
   getUsersSlice,
 } from "../slice/UsersSlice";
 import {
@@ -58,7 +58,7 @@ export function* workUpdateUserById(action: { type: string; user: UserState }) {
   try {
     yield updateUserAPI(user);
 
-    yield put(edithUserSlice(user));
+    yield put(editUserSlice(user));
   } catch (error) {
     console.error(error);
   }
