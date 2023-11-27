@@ -17,6 +17,8 @@ export default function MyTable() {
   const rows = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
+    // dispatching action by its type
+    // watcherSaga is going to take that action, do asynchronous code with its handler getUsersSaga: axios.get()
     dispatch({ type: TypeActions.GET_USERS });
   }, [dispatch]); // FIXME: update on every new user (rows??)
 

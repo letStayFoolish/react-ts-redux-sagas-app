@@ -1,4 +1,4 @@
-import { put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import {
   addUserSlice as addNewUserSlice,
   deleteUserSlice as removeUserByIdSlice,
@@ -18,8 +18,11 @@ import { setUserSlice } from "../slice/UserSlice";
 
 export function* getUsersSaga(): any {
   try {
-    const response = yield getUsersAPI();
+    // const response = yield getUsersAPI();
+    const response = yield call(getUsersAPI);
 
+    // store the data in reducer:
+    // ...which means it will get response.data and set our state
     yield put(getUsersSlice(response.data));
   } catch (error) {
     console.error(error);
@@ -73,6 +76,7 @@ export function* removeUserByIdSaga(action: any) {
 
 // watcher:
 function* watchUsersSaga() {
+  // connecting our actions with sagas handler
   yield takeEvery(TypeActions.GET_USERS, getUsersSaga);
   yield takeEvery(TypeActions.GET_USER_BY_ID, getUserByIdSaga);
   yield takeEvery(TypeActions.CREATE_USER, addNewUserSaga);
