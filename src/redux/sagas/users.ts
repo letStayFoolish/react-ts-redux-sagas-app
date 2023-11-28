@@ -31,7 +31,8 @@ export function* getUsersSaga(): any {
 
 export function* getUserByIdSaga(action: any) {
   try {
-    yield getUserByIdAPI(action.id);
+    yield call(getUserByIdAPI, action.id);
+    // yield getUserByIdAPI(action.id);
 
     yield put(setUserSlice(action.id));
   } catch (error) {
@@ -41,7 +42,8 @@ export function* getUserByIdSaga(action: any) {
 
 export function* addNewUserSaga(action: { type: string; user: UserState }) {
   try {
-    yield createUserAPI(action.user);
+    // yield createUserAPI(action.user);
+    yield call(createUserAPI, action.user);
 
     yield addNewUserSlice(action.user);
   } catch (error) {
@@ -56,7 +58,8 @@ export function* updateUserProfileInformationSaga(action: {
   const { user } = action;
 
   try {
-    yield updateUserAPI(user);
+    // yield updateUserAPI(user);
+    yield call(updateUserAPI, user);
 
     yield put(updateUserProfileInformationSlice(user));
   } catch (error) {
@@ -66,7 +69,8 @@ export function* updateUserProfileInformationSaga(action: {
 
 export function* removeUserByIdSaga(action: any) {
   try {
-    yield removeUserByIdAPI(action.id);
+    // yield removeUserByIdAPI(action.id);
+    yield call(removeUserByIdAPI, action.id);
 
     yield put(removeUserByIdSlice(action));
   } catch (error) {

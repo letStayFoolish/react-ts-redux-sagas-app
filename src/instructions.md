@@ -8,5 +8,7 @@ function\* getUsersSaga() {...}
 That function, getUsersSaga(), will call our API request and return data:
 const response = yield call(getUsersAPI);
 
-With that data, we gonna dispatch redux action to set users whatever that data is. state = action.payload:
+With that data, we gonna dispatch redux action to set users, whatever that data is. state = action.payload:
 yield put(getUsersSlice(response.data));
+
+thats how we change global state using redux-saga
