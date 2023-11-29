@@ -31,10 +31,9 @@ export function* getUsersSaga(): any {
 
 export function* getUserByIdSaga(action: any) {
   try {
-    yield call(getUserByIdAPI, action.id);
-    // yield getUserByIdAPI(action.id);
+    yield call(getUserByIdAPI, action.payload.id);
 
-    yield put(setUserSlice(action.id));
+    yield put(setUserSlice(action.payload));
   } catch (error) {
     console.error(error);
   }

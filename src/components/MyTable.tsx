@@ -47,8 +47,9 @@ export default function MyTable() {
               <TableCell align="right">{row.password}</TableCell>
               <TableCell align="right">
                 <Button
-                  onClick={() => dispatch(setUserSlice(row))}
-                  // onClick={() => dispatch({ type: GET_USER_BY_ID, row })}
+                  onClick={() =>
+                    dispatch({ type: TypeActions.GET_USER_BY_ID, payload: row })
+                  }
                   fullWidth
                   variant="contained"
                 >

@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 import Button from "@mui/material/Button";
@@ -7,6 +7,7 @@ import Input from "@mui/material/Input";
 import { RootState } from "../store";
 import { setUserSlice } from "../redux/slice/UserSlice";
 import { TypeActions } from "../redux/types";
+import debounce from "../helper/debounce";
 
 const MyForm = () => {
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -15,11 +16,20 @@ const MyForm = () => {
 
   const user = useSelector((state: RootState) => state.user);
 
-  const handleChange = (event: FormEvent) => {
-    const { name, value } = event.target as HTMLInputElement;
+  // const handleChange = (event: FormEvent) => {
+  //   const { name, value } = event.target as HTMLInputElement;
 
-    dispatch(setUserSlice({ ...user, [name]: value }));
-  };
+  //   dispatch(setUserSlice({ ...user, [name]: value }));
+  // };
+
+  const debouncedHandleChange = useCallback(
+    debounce((event: FormEvent) => {
+      const { name, value } = event.target as HTMLInputElement;
+
+      dispatch(setUserSlice({ ...user, [name]: value }));
+    }, 800),
+    [dispatch, user]
+  );
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
@@ -62,7 +72,7 @@ const MyForm = () => {
           name="name"
           value={user?.name || ""}
           fullWidth
-          onChange={(event) => handleChange(event)}
+          onChange={(event) => debouncedHandleChange(event)}
         ></Input>
         <Input
           type="email"
@@ -70,7 +80,7 @@ const MyForm = () => {
           name="email"
           value={user?.email || ""}
           fullWidth
-          onChange={(event) => handleChange(event)}
+          onChange={(event) => debouncedHandleChange(event)}
         ></Input>
         <Input
           type="password"
@@ -78,7 +88,7 @@ const MyForm = () => {
           name="password"
           value={user?.password || ""}
           fullWidth
-          onChange={(event) => handleChange(event)}
+          onChange={(event) => debouncedHandleChange(event)}
         ></Input>
         <Button
           disabled={disabled}
