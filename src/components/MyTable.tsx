@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import { type RootState } from "../store";
-import { TypeActions } from "../redux/types";
+import { TYPE_ACTIONS } from "../redux/types";
 import { setUserSlice } from "../redux/slice/UserSlice";
 
 export default function MyTable() {
@@ -19,7 +19,7 @@ export default function MyTable() {
   useEffect(() => {
     // dispatching action by its type
     // watcherSaga is going to take that action, do asynchronous code with its handler getUsersSaga: axios.get()
-    dispatch({ type: TypeActions.GET_USERS });
+    dispatch({ type: TYPE_ACTIONS.GET_USERS });
   }, [dispatch]); // FIXME: update on every new user (rows??)
 
   return (
@@ -48,7 +48,10 @@ export default function MyTable() {
               <TableCell align="right">
                 <Button
                   onClick={() =>
-                    dispatch({ type: TypeActions.GET_USER_BY_ID, payload: row })
+                    dispatch({
+                      type: TYPE_ACTIONS.GET_USER_BY_ID,
+                      payload: row,
+                    })
                   }
                   fullWidth
                   variant="contained"
@@ -60,7 +63,7 @@ export default function MyTable() {
                 <Button
                   onClick={() =>
                     dispatch({
-                      type: TypeActions.DELETE_USER_BY_ID,
+                      type: TYPE_ACTIONS.DELETE_USER_BY_ID,
                       id: row.id,
                     })
                   }

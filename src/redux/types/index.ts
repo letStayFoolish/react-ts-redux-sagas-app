@@ -1,4 +1,4 @@
-export const enum TypeActions {
+export const enum TYPE_ACTIONS {
   GET_USERS = "GET_USERS",
   GET_USER_BY_ID = "GET_USER_BYid",
   CREATE_USER = "CREATE_USER",

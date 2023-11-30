@@ -12,7 +12,7 @@ import {
   getUsersAPI,
   updateUserAPI,
 } from "../../api";
-import { TypeActions } from "../types";
+import { TYPE_ACTIONS } from "../types";
 import { type UserState } from "../../types";
 import { setUserSlice } from "../slice/UserSlice";
 
@@ -80,14 +80,14 @@ export function* removeUserByIdSaga(action: any) {
 // watcher:
 function* watchUsersSaga() {
   // connecting our actions with sagas handler
-  yield takeEvery(TypeActions.GET_USERS, getUsersSaga);
-  yield takeEvery(TypeActions.GET_USER_BY_ID, getUserByIdSaga);
-  yield takeEvery(TypeActions.CREATE_USER, addNewUserSaga);
+  yield takeEvery(TYPE_ACTIONS.GET_USERS, getUsersSaga);
+  yield takeEvery(TYPE_ACTIONS.GET_USER_BY_ID, getUserByIdSaga);
+  yield takeEvery(TYPE_ACTIONS.CREATE_USER, addNewUserSaga);
   yield takeEvery(
-    TypeActions.UPDATE_USER_BY_ID,
+    TYPE_ACTIONS.UPDATE_USER_BY_ID,
     updateUserProfileInformationSaga
   );
-  yield takeEvery(TypeActions.DELETE_USER_BY_ID, removeUserByIdSaga);
+  yield takeEvery(TYPE_ACTIONS.DELETE_USER_BY_ID, removeUserByIdSaga);
 }
 
 export default watchUsersSaga;
