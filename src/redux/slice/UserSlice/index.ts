@@ -10,7 +10,9 @@ const userSlice = createSlice({
       state: UserState,
       action: PayloadAction<UserState>
     ): UserState {
+      console.log("action.payload: ", action.payload);
       state = action.payload;
+      console.log("state: ", state);
       return state;
     },
   },

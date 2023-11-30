@@ -1,86 +1,93 @@
-import { put, takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import {
-  addUserSlice,
-  deleteUserSlice,
-  editUserSlice,
+  addUserSlice as addNewUserSlice,
+  deleteUserSlice as removeUserByIdSlice,
+  editUserSlice as updateUserProfileInformationSlice,
   getUsersSlice,
 } from "../slice/UsersSlice";
 import {
   createUserAPI,
-  deleteUserByIdAPI,
+  deleteUserByIdAPI as removeUserByIdAPI,
   getUserByIdAPI,
   getUsersAPI,
   updateUserAPI,
 } from "../../api";
-import {
-  CREATE_USER,
-  GET_USERS,
-  DELETE_USER_BY_ID,
-  GET_USER_BY_ID,
-  UPDATE_USER_BY_ID,
-} from "../types";
+import { TYPE_ACTIONS } from "../types";
 import { type UserState } from "../../types";
 import { setUserSlice } from "../slice/UserSlice";
 
-export function* workGetUsersSaga(): any {
+export function* getUsersSaga(): any {
   try {
-    const response = yield getUsersAPI();
+    // const response = yield getUsersAPI();
+    const response = yield call(getUsersAPI);
 
+    // store the data in reducer:
+    // ...which means it will get response.data and set our state
     yield put(getUsersSlice(response.data));
   } catch (error) {
     console.error(error);
   }
 }
 
-export function* workGetUserById(action: any) {
+export function* getUserByIdSaga(action: any) {
   try {
-    yield getUserByIdAPI(action.id);
+    yield call(getUserByIdAPI, action.payload.id);
 
-    yield put(setUserSlice(action.id));
+    yield put(setUserSlice(action.payload));
   } catch (error) {
     console.error(error);
   }
 }
 
-export function* workCreateUser(action: { type: string; user: UserState }) {
+export function* addNewUserSaga(action: { type: string; user: UserState }) {
   try {
-    yield createUserAPI(action.user);
+    // yield createUserAPI(action.user);
+    yield call(createUserAPI, action.user);
 
-    yield addUserSlice(action.user);
+    yield addNewUserSlice(action.user);
   } catch (error) {
     console.error(error);
   }
 }
 
-export function* workUpdateUserById(action: { type: string; user: UserState }) {
+export function* updateUserProfileInformationSaga(action: {
+  type: string;
+  user: UserState;
+}) {
   const { user } = action;
 
   try {
-    yield updateUserAPI(user);
+    // yield updateUserAPI(user);
+    yield call(updateUserAPI, user);
 
-    yield put(editUserSlice(user));
+    yield put(updateUserProfileInformationSlice(user));
   } catch (error) {
     console.error(error);
   }
 }
 
-export function* workDeleteUserById(action: any) {
+export function* removeUserByIdSaga(action: any) {
   try {
-    yield deleteUserByIdAPI(action.id);
+    // yield removeUserByIdAPI(action.id);
+    yield call(removeUserByIdAPI, action.id);
 
-    yield put(deleteUserSlice(action));
+    yield put(removeUserByIdSlice(action));
   } catch (error) {
     console.error(error);
   }
 }
 
 // watcher:
-function* watchGetUsers() {
-  yield takeEvery(GET_USERS, workGetUsersSaga);
-  yield takeEvery(GET_USER_BY_ID, workGetUserById);
-  yield takeEvery(CREATE_USER, workCreateUser);
-  yield takeEvery(UPDATE_USER_BY_ID, workUpdateUserById);
-  yield takeEvery(DELETE_USER_BY_ID, workDeleteUserById);
+function* watchUsersSaga() {
+  // connecting our actions with sagas handler
+  yield takeEvery(TYPE_ACTIONS.GET_USERS, getUsersSaga);
+  yield takeEvery(TYPE_ACTIONS.GET_USER_BY_ID, getUserByIdSaga);
+  yield takeEvery(TYPE_ACTIONS.CREATE_USER, addNewUserSaga);
+  yield takeEvery(
+    TYPE_ACTIONS.UPDATE_USER_BY_ID,
+    updateUserProfileInformationSaga
+  );
+  yield takeEvery(TYPE_ACTIONS.DELETE_USER_BY_ID, removeUserByIdSaga);
 }
 
-export default watchGetUsers;
+export default watchUsersSaga;

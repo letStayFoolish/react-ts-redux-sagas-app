@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import { type RootState } from "../store";
-import { DELETE_USER_BY_ID, GET_USERS } from "../redux/types";
+import { TYPE_ACTIONS } from "../redux/types";
 import { setUserSlice } from "../redux/slice/UserSlice";
 
 export default function MyTable() {
@@ -17,7 +17,9 @@ export default function MyTable() {
   const rows = useSelector((state: RootState) => state.users);
 
   useEffect(() => {
-    dispatch({ type: GET_USERS });
+    // dispatching action by its type
+    // watcherSaga is going to take that action, do asynchronous code with its handler getUsersSaga: axios.get()
+    dispatch({ type: TYPE_ACTIONS.GET_USERS });
   }, [dispatch]); // FIXME: update on every new user (rows??)
 
   return (
@@ -45,8 +47,12 @@ export default function MyTable() {
               <TableCell align="right">{row.password}</TableCell>
               <TableCell align="right">
                 <Button
-                  onClick={() => dispatch(setUserSlice(row))}
-                  // onClick={() => dispatch({ type: GET_USER_BY_ID, row })}
+                  onClick={() =>
+                    dispatch({
+                      type: TYPE_ACTIONS.GET_USER_BY_ID,
+                      payload: row,
+                    })
+                  }
                   fullWidth
                   variant="contained"
                 >
@@ -56,7 +62,10 @@ export default function MyTable() {
               <TableCell align="right">
                 <Button
                   onClick={() =>
-                    dispatch({ type: DELETE_USER_BY_ID, id: row.id })
+                    dispatch({
+                      type: TYPE_ACTIONS.DELETE_USER_BY_ID,
+                      id: row.id,
+                    })
                   }
                   fullWidth
                   variant="contained"

@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { nanoid } from "nanoid";
 import Button from "@mui/material/Button";
@@ -6,7 +6,8 @@ import Container from "@mui/material/Container";
 import Input from "@mui/material/Input";
 import { RootState } from "../store";
 import { setUserSlice } from "../redux/slice/UserSlice";
-import { CREATE_USER, UPDATE_USER_BY_ID } from "../redux/types";
+import { TYPE_ACTIONS } from "../redux/types";
+import debounce from "../helper/debounce";
 
 const MyForm = () => {
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -15,18 +16,23 @@ const MyForm = () => {
 
   const user = useSelector((state: RootState) => state.user);
 
-  const handleChange = (event: FormEvent) => {
-    const { name, value } = event.target as HTMLInputElement;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
 
     dispatch(setUserSlice({ ...user, [name]: value }));
   };
+
+  const debouncedHandleChange = useCallback(debounce(handleChange, 800), []);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
     user.id === ""
-      ? dispatch({ type: CREATE_USER, user: { ...user, id: nanoid(8) } })
-      : dispatch({ type: UPDATE_USER_BY_ID, user });
+      ? dispatch({
+          type: TYPE_ACTIONS.CREATE_USER,
+          user: { ...user, id: nanoid(8) },
+        })
+      : dispatch({ type: TYPE_ACTIONS.UPDATE_USER_BY_ID, user });
 
     // Reset form fields:
     dispatch(
@@ -41,6 +47,7 @@ const MyForm = () => {
 
   useEffect(() => {
     const { name, email, password } = user;
+    console.log("USER: ", user);
 
     if (!name || !email || !password) {
       setDisabled(true);
@@ -57,25 +64,25 @@ const MyForm = () => {
           type="text"
           placeholder="EnterYour Name"
           name="name"
-          value={user?.name || ""}
+          // value={user?.name || ""}
           fullWidth
-          onChange={(event) => handleChange(event)}
+          onChange={handleChange}
         ></Input>
         <Input
           type="email"
           placeholder="Enter Your Email Address"
           name="email"
-          value={user?.email || ""}
+          // value={user?.email || ""}
           fullWidth
-          onChange={(event) => handleChange(event)}
+          onChange={handleChange}
         ></Input>
         <Input
           type="password"
           placeholder="Enter Your Password"
           name="password"
-          value={user?.password || ""}
+          // value={user?.password || ""}
           fullWidth
-          onChange={(event) => handleChange(event)}
+          onChange={handleChange}
         ></Input>
         <Button
           disabled={disabled}

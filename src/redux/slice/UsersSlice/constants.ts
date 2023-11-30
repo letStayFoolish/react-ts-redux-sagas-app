@@ -1,3 +1,3 @@
-import { type UsersState } from "./types";
+import { type UserState } from "../../../types";
 
-export const initialState: UsersState = [];
+export const initialState: Array<UserState> = [];

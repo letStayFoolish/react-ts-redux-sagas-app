@@ -4,3 +4,7 @@ export type UserState = {
   email: string;
   password: string;
 };
+
+export type RootState = {
+  users: Array<UserState>;
+};
